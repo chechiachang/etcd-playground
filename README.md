@@ -1,12 +1,17 @@
+# WIP project
+
+在 release tag 出來前內容會有增減，請注意。
+
+Content may change before release tag. Use with caution.
+
 # etcd-playground
 
 This is a playground for etcd. It is a simple setup with a single node etcd cluster. The setup is done using docker-compose.
 
 # Motivation
 
-Workshop lecture on [2024 Kubernetes Summit](https://k8s.ithome.com.tw/2024/)
-
-需要搭配投影片
+2024 K8s Summit 工作坊教材 Workshop lecture on [2024 Kubernetes Summit](https://k8s.ithome.com.tw/2024/) 
+- 需要搭配投影片
 
 ### Prerequisites
 
