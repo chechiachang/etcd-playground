@@ -1,0 +1,8 @@
+# etcd volumes
+*/etcd1/*
+*/etcd2/*
+*/etcd3/*
+
+!*/etcd1/.gitkeep
+!*/etcd2/.gitkeep
+!*/etcd3/.gitkeep
