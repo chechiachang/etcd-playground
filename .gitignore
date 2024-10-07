@@ -6,3 +6,7 @@
 !*/etcd1/.gitkeep
 !*/etcd2/.gitkeep
 !*/etcd3/.gitkeep
+
+# control panel ca and certs
+02-control-panel/certs/*
+!02-control-panel/certs/ca.conf

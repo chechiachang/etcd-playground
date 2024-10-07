@@ -1,0 +1,55 @@
+# https://github.com/jpetazzo/container.training/blob/main/compose/simple-k8s-control-plane/docker-compose.yaml
+
+version: "3"
+
+networks:
+  etcd:
+    name: etcd
+    external: true
+
+services:
+
+  #pause:
+  #  ports:
+  #  - 8080:8080
+  #  image: k8s.gcr.io/pause
+
+  #etcd:
+  #  network_mode: "service:pause"
+  #  image: k8s.gcr.io/etcd:3.4.9
+  #  command: etcd
+
+  # https://github.com/kelseyhightower/kubernetes-the-hard-way/blob/master/units/kube-apiserver.service
+  kube-apiserver:
+    container_name: kube-apiserver
+    networks:
+      - etcd
+    #network_mode: "service:pause"
+    image: registry.k8s.io/kube-apiserver:v1.31.0
+    entrypoint: kube-apiserver
+    command: 
+      - --etcd-servers=http://etcd-1:2379,http://etcd-2:2379,http://etcd-3:2379 
+      - --bind-address=0.0.0.0
+      - --service-account-key-file=/var/lib/kubernetes/service-accounts.crt
+      - --service-account-signing-key-file=/var/lib/kubernetes/service-accounts.key
+      - --service-account-issuer=https://server.kubernetes.local:6443
+
+  kube-controller-manager:
+    container_name: kube-controller-manager
+    networks:
+      - etcd
+    #network_mode: "service:pause"
+    image: registry.k8s.io/kube-controller-manager:v1.31.0
+    command:
+      - kube-controller-manager
+      - --master http://localhost:8080
+    
+  kube-scheduler:
+    container_name: kube-scheduler
+    networks:
+      - etcd
+    #network_mode: "service:pause"
+    image: registry.k8s.io/kube-scheduler:v1.31.0
+    command:
+      - kube-scheduler
+      - --master http://localhost:8080
