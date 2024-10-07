@@ -31,19 +31,18 @@ certs=(
 )
 
 for i in ${certs[*]}; do
-  mkdir -p ${i}
-  openssl genrsa -out "${i}/${i}.key" 4096
+  openssl genrsa -out "${i}.key" 4096
 
-  openssl req -new -key "${i}/${i}.key" -sha256 \
+  openssl req -new -key "${i}.key" -sha256 \
     -config "ca.conf" -section ${i} \
-    -out "${i}/${i}.csr"
+    -out "${i}.csr"
 
-  openssl x509 -req -days 3653 -in "${i}/${i}.csr" \
+  openssl x509 -req -days 3653 -in "${i}.csr" \
     -copy_extensions copyall \
     -sha256 -CA "ca.crt" \
     -CAkey "ca.key" \
     -CAcreateserial \
-    -out "${i}/${i}.crt"
+    -out "${i}.crt"
 done
 ```
 
@@ -100,3 +99,22 @@ service-accounts.crt
 service-accounts.csr
 service-accounts.key
 ```
+
+### Copy certificates and keys to the nodes
+
+```
+ls ../apiserver/
+
+cp ca.key ca.crt \
+kube-apiserver.key kube-apiserver.crt \
+service-accounts.key service-accounts.crt \
+../apiserver/
+```
+
+```
+ls ../apiserver/
+
+ca.crt               kube-apiserver.crt   service-accounts.crt
+ca.key               kube-apiserver.key   service-accounts.key
+```
+
