@@ -1,0 +1,57 @@
+networks:
+  etcd:
+    name: etcd
+    external: true
+
+services:
+  prometheus:
+    image: prom/prometheus:v2.54.1
+    container_name: prometheus
+    networks:
+      - etcd
+    volumes:
+      #- prometheus:/prometheus
+      - config-prometheus:/etc/prometheus
+    ports:
+      - 9090:9090
+  grafana:
+    image: grafana/grafana:9.1.7
+    container_name: grafana
+    networks:
+      - etcd
+    volumes:
+      #- grafana:/var/lib/grafana
+      #- config-grafana:/usr/share/grafana/conf
+      - config-grafana:/etc/grafana
+    ports:
+      - 3000:3000
+
+volumes:
+  #prometheus:
+  #  name: prometheus
+  #  driver: local
+  #  driver_opts:
+  #    type: none
+  #    o: bind
+  #    device: prometheus
+  #grafana:
+  #  name: grafana
+  #  driver: local
+  #  driver_opts:
+  #    type: none
+  #    o: bind
+  #    device: grafana
+  config-grafana:
+    name: config-grafana
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: config/grafana
+  config-prometheus:
+    name: config-prometheus
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: config/prometheus
