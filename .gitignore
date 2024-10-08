@@ -14,11 +14,23 @@
 # control panel ca and certs
 02-control-panel/certs/*
 !02-control-panel/certs/ca.conf
+!02-control-panel/certs/generate.sh
+!02-control-panel/certs/configs
 
 02-control-panel/apiserver/*
 02-control-panel/controller-manager/*
 02-control-panel/scheduler/*
+02-control-panel/kubectl/*
+02-control-panel/node-0/kubelet/*
+02-control-panel/node-0/kube-proxy/*
+02-control-panel/node-1/kubelet/*
+02-control-panel/node-1/kube-proxy/*
 
 !02-control-panel/apiserver/.gitkeep
 !02-control-panel/controller-manager/.gitkeep
-!02-control-panel/scheduler/.gitkeep
+!02-control-panel/scheduler/kube-scheduler.yaml
+!02-control-panel/node-0/kube-proxy/.gitkeep
+!02-control-panel/node-0/kubelet/.gitkeep
+!02-control-panel/node-1/kube-proxy/.gitkeep
+!02-control-panel/node-1/kubelet/.gitkeep
+!02-control-panel/kubectl/.gitkeep
