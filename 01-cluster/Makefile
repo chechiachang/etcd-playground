@@ -2,9 +2,8 @@ up:
 	docker-compose up -d
 
 down:
-	docker-compose down
+	docker-compose down --volumes
 
 # dangerous
 destroy: down
-	docker volume rm etcd1 etcd2 etcd3
 	rm -rf etcd*/*

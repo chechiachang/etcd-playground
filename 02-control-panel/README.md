@@ -1,102 +1,57 @@
 ### CA and TLS Certificates
 
-https://github.com/kelseyhightower/kubernetes-the-hard-way/blob/master/docs/04-certificate-authority.md#provisioning-a-ca-and-generating-tls-certificates
-
 ```
-cd certs
-
-openssl genrsa -out ca.key 4096
-openssl req -x509 -new -sha512 -noenc \
-  -key ca.key -days 3653 \
-  -config ca.conf \
-  -out ca.crt
+cd 02-control-panel/certs
+chmod +x generate.sh
+./generate.sh
 ```
 
-Check
+or complete [https://github.com/kelseyhightower/kubernetes-the-hard-way](https://github.com/kelseyhightower/kubernetes-the-hard-way)
+
+- [04-certificate-authority.md]https://github.com/kelseyhightower/kubernetes-the-hard-way/blob/master/docs/04-certificate-authority.md#provisioning-a-ca-and-generating-tls-certificates
+
+### Docker up
 
 ```
-ls ca.*
-ca.conf ca.crt  ca.key
+cd 02-control-panel
+make up
 ```
 
-### Generate certificates
+### Docker down
 
 ```
-certs=(
-  "admin" "node-0" "node-1"
-  "kube-proxy" "kube-scheduler"
-  "kube-controller-manager"
-  "kube-apiserver"
-  "service-accounts"
-)
-
-for i in ${certs[*]}; do
-  mkdir -p ${i}
-  openssl genrsa -out "${i}/${i}.key" 4096
-
-  openssl req -new -key "${i}/${i}.key" -sha256 \
-    -config "ca.conf" -section ${i} \
-    -out "${i}/${i}.csr"
-
-  openssl x509 -req -days 3653 -in "${i}/${i}.csr" \
-    -copy_extensions copyall \
-    -sha256 -CA "ca.crt" \
-    -CAkey "ca.key" \
-    -CAcreateserial \
-    -out "${i}/${i}.crt"
-done
+cd 02-control-panel
+make down
 ```
 
-Output
+### Access Control Panel
 
 ```
-Certificate request self-signature ok
-subject=CN=admin, O=system:masters
-Certificate request self-signature ok
-subject=CN=system:node:node-0, O=system:nodes, C=TW, ST=Taiwan, L=Taichung
-Certificate request self-signature ok
-subject=CN=system:node:node-1, O=system:nodes, C=TW, ST=Taiwan, L=Taichung
-Certificate request self-signature ok
-subject=CN=system:kube-proxy, O=system:node-proxier, C=TW, ST=Taiwan, L=Taichung
-Certificate request self-signature ok
-subject=CN=system:kube-scheduler, O=system:system:kube-scheduler, C=TW, ST=Taiwan, L=Taichung
-Certificate request self-signature ok
-subject=CN=system:kube-controller-manager, O=system:kube-controller-manager, C=TW, ST=Taiwan, L=Taichung
-Certificate request self-signature ok
-subject=CN=kubernetes, C=TW, ST=Taiwan, L=Taichung
-Certificate request self-signature ok
-subject=CN=service-accounts
+docker ps
+
+IMAGE                                             COMMAND                  STATUS         PORTS                              NAMES
+registry.k8s.io/kube-scheduler:v1.31.0            "kube-scheduler --co…"   Up 2 seconds                                      kube-scheduler
+registry.k8s.io/kube-controller-manager:v1.31.0   "kube-controller-man…"   Up 2 seconds                                      kube-controller-manager
+bitnami/kubectl:1.31.1-debian-12-r3               "sleep 86400"            Up 2 seconds                                      kubectl
+registry.k8s.io/kube-apiserver:v1.31.0            "kube-apiserver --bi…"   Up 2 seconds   0.0.0.0:6443->6443/tcp             kube-apiserver
+quay.io/coreos/etcd:v3.5.15                       "/usr/local/bin/etcd…"   Up 2 hours     2380/tcp, 0.0.0.0:2380->2379/tcp   etcd-2
+quay.io/coreos/etcd:v3.5.15                       "/usr/local/bin/etcd…"   Up 2 hours     0.0.0.0:2379->2379/tcp, 2380/tcp   etcd-1
+quay.io/coreos/etcd:v3.5.15                       "/usr/local/bin/etcd…"   Up 2 hours     2380/tcp, 0.0.0.0:2381->2379/tcp   etcd-3
 ```
 
-Check
+kubectl
 
 ```
-ls -1 *.crt *.key *.csr
+kubectl --kubeconfig=certs/admin.kubeconfig cluster-info
 
-admin.crt
-admin.csr
-admin.key
-ca.crt
-ca.key
-kube-apiserver.crt
-kube-apiserver.csr
-kube-apiserver.key
-kube-controller-manager.crt
-kube-controller-manager.csr
-kube-controller-manager.key
-kube-proxy.crt
-kube-proxy.csr
-kube-proxy.key
-kube-scheduler.crt
-kube-scheduler.csr
-kube-scheduler.key
-node-0.crt
-node-0.csr
-node-0.key
-node-1.crt
-node-1.csr
-node-1.key
-service-accounts.crt
-service-accounts.csr
-service-accounts.key
+Kubernetes control plane is running at https://127.0.0.1:6443
+
+To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
+```
+
+```
+kubectl --kubeconfig=certs/admin.kubeconfig get all
+
+NAME                 TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
+service/kubernetes   ClusterIP   10.0.0.1     <none>        443/TCP   47h
 ```
