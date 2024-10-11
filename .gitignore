@@ -30,7 +30,7 @@
 !02-control-panel/controller-manager/.gitkeep
 !02-control-panel/scheduler/kube-scheduler.yaml
 !02-control-panel/node-0/kube-proxy/.gitkeep
-!02-control-panel/node-0/kubelet/.gitkeep
+!02-control-panel/node-0/kubelet/kubelet-config.yaml
 !02-control-panel/node-1/kube-proxy/.gitkeep
-!02-control-panel/node-1/kubelet/.gitkeep
+!02-control-panel/node-1/kubelet/kubelet-config.yaml
 !02-control-panel/kubectl/.gitkeep
