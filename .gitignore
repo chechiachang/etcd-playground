@@ -1,7 +1,7 @@
 # etcd volumes
-00-prerequsites/etcd1/*
+00-prerequsites/etcd0/*
 
-!00-prerequsites/etcd1/.gitkeep
+!00-prerequsites/etcd0/.gitkeep
 
 01-cluster/etcd1/*
 01-cluster/etcd2/*

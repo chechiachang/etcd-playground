@@ -12,9 +12,9 @@ networks:
     driver: bridge
 
 services:
-  etcd-1:
+  etcd-0:
     <<: *common_settings
-    container_name: etcd-1
+    container_name: etcd-0
     networks:
       - etcd
     command:
@@ -28,15 +28,15 @@ services:
       - '--data-dir=/etcd_data'
       - *flag_initial_cluster_token
     volumes:
-      - etcd1:/etcd_data
+      - etcd0:/etcd_data
     ports:
       - 2379:2379
 
 volumes:
-  etcd1:
-    name: etcd1
+  etcd0:
+    name: etcd0
     driver: local
     driver_opts:
       type: none
       o: bind
-      device: etcd1
+      device: etcd0
