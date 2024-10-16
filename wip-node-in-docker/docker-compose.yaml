@@ -1,0 +1,38 @@
+networks:
+  etcd:
+    name: etcd
+    external: true
+
+services:
+  node-0:
+    container_name: node-0
+    networks:
+      - etcd
+    image: kindest/node:v1.31.1
+    environment:
+      - "KIND_EXPERIMENTAL_CONTAINERD_SNAPSHOTTER"
+      - "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      - "container=docker"
+      - "HTTP_PROXY="
+      - "HTTPS_PROXY="
+      - "NO_PROXY="
+    privileged: true # write to local
+    entrypoint: /usr/local/bin/entrypoint
+    command: 
+      - /sbin/init
+    #command: 
+    #  - /usr/bin/kubelet
+    #  - --config=/var/lib/kubelet/kubelet-config.yaml
+    #  - --kubeconfig=/var/lib/kubelet/kubeconfig
+    #  - --register-node=true
+    volumes:
+      - node-0:/var/lib/kubelet
+
+volumes:
+  node-0:
+    name: node-0
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ../02-control-panel/node-0/kubelet
