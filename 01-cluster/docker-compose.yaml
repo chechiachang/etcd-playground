@@ -71,12 +71,53 @@ services:
       - '--election-timeout=1250'
       - '--initial-cluster=etcd-1=http://etcd-1:2380,etcd-2=http://etcd-2:2380,etcd-3=http://etcd-3:2380'
       - '--initial-cluster-state=new'
+      #- '--initial-cluster-state=existing'
       - '--data-dir=/etcd_data'
       - *flag_initial_cluster_token
     volumes:
       - etcd3:/etcd_data
     ports:
       - 2381:2379
+
+  #etcd-4:
+  #  <<: *common_settings
+  #  container_name: etcd-4
+  #  networks:
+  #    - etcd
+  #  command:
+  #    - '--name=etcd-4'
+  #    - '--initial-advertise-peer-urls=http://etcd-4:2380'
+  #    - '--listen-peer-urls=http://0.0.0.0:2380'
+  #    - '--listen-client-urls=http://0.0.0.0:2379'
+  #    - '--advertise-client-urls=http://etcd-4:2379'
+  #    - '--heartbeat-interval=250'
+  #    - '--election-timeout=1250'
+  #    - '--initial-cluster=etcd-1=http://etcd-1:2380,etcd-2=http://etcd-2:2380,etcd-3=http://etcd-3:2380,etcd-4=http://etcd-4:2380' # ?
+  #    - '--initial-cluster-state=existing' # change to existing
+  #    - '--data-dir=/etcd_data'
+  #    - *flag_initial_cluster_token
+  #  ports:
+  #    - 2382:2379
+
+  #etcd-5:
+  #  <<: *common_settings
+  #  container_name: etcd-5
+  #  networks:
+  #    - etcd
+  #  command:
+  #    - '--name=etcd-5'
+  #    - '--initial-advertise-peer-urls=http://etcd-5:2380'
+  #    - '--listen-peer-urls=http://0.0.0.0:2380'
+  #    - '--listen-client-urls=http://0.0.0.0:2379'
+  #    - '--advertise-client-urls=http://etcd-5:2379'
+  #    - '--heartbeat-interval=250'
+  #    - '--election-timeout=1250'
+  #    - '--initial-cluster=etcd-1=http://etcd-1:2380,etcd-2=http://etcd-2:2380,etcd-3=http://etcd-3:2380,etcd-4=http://etcd-4:2380,etcd-5=http://etcd-5:2380' # ?
+  #    - '--initial-cluster-state=existing' # change to existing
+  #    - '--data-dir=/etcd_data'
+  #    - *flag_initial_cluster_token
+  #  ports:
+  #    - 2383:2379
 
 volumes:
   etcd1:
