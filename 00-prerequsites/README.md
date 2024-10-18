@@ -144,6 +144,15 @@ rm -rf etcd1/member
 docker-compose up
 ```
 
+### (Optional) ngrok
+
+- Sign up [https://ngrok.com/](https://ngrok.com/)
+- complete `../monitoring` and access to the dashboard
+
+```
+docker run -it -e NGROK_AUTHTOKEN=<token> ngrok/ngrok http 80
+```
+
 # Issues
 
 - insecure transport
