@@ -27,6 +27,7 @@ services:
       - '--election-timeout=1250'
       - '--initial-cluster=etcd-1=http://etcd-1:2380,etcd-2=http://etcd-2:2380,etcd-3=http://etcd-3:2380'
       - '--initial-cluster-state=new'
+      #- '--initial-cluster-state=existing'
       - '--data-dir=/etcd_data'
       - *flag_initial_cluster_token
     volumes:
@@ -49,6 +50,7 @@ services:
       - '--election-timeout=1250'
       - '--initial-cluster=etcd-1=http://etcd-1:2380,etcd-2=http://etcd-2:2380,etcd-3=http://etcd-3:2380'
       - '--initial-cluster-state=new'
+      #- '--initial-cluster-state=existing'
       - '--data-dir=/etcd_data'
       - *flag_initial_cluster_token
     volumes:
